@@ -1,5 +1,4 @@
-﻿using DotNet_Practice.Models;
-namespace DotNet_Practice.DTOs.ResponseDTO
+﻿namespace DotNet_Practice.DTOs.ResponseDTO
 {
     public class StudentDTO
     {

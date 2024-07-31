@@ -1,10 +1,9 @@
-﻿using DotNet_Practice.Models;
-using DotNet_Practice.ViewModels;
+﻿using DotNet_Practice.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Repository
 {
-   
+
     public class SchoolRepository<T> : ISchoolRepository<T> where T:class
     {
         private readonly SchoolContext _dbContext;
