@@ -1,5 +1,4 @@
 ﻿using DotNet_Practice.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using DotNet_Practice.Repository;
 using DotNet_Practice.Models;
 using AutoMapper;
