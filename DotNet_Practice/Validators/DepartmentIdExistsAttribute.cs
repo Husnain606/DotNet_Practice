@@ -1,6 +1,5 @@
 ﻿using DotNet_Practice.Repository;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace DotNet_Practice.Validators
 {

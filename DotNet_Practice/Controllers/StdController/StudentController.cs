@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DotNet_Practice.Services;
-using DotNet_Practice.DTOs;
-using DotNet_Practice.Repository;
 using AutoMapper;
-using DotNet_Practice.Models;
 using DotNet_Practice.DTOs.NewFolder;
 
 namespace DotNet_Practice.Controllers.StdController

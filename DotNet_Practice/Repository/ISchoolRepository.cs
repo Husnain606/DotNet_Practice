@@ -1,5 +1,4 @@
-﻿using DotNet_Practice.Models;
-using DotNet_Practice.ViewModels;
+﻿using DotNet_Practice.ViewModels;
 
 namespace DotNet_Practice.Repository
 {
