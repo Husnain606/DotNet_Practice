@@ -41,7 +41,7 @@ namespace DotNet_Practice.Controllers.DepartController
 
         // GET DEPARTMENT DETAILS BY ID
         [HttpGet("GetDepartmentById/{id}")]
-        public async Task<IActionResult> GetDepartmentById(int id)
+        public async Task<IActionResult> GetDepartmentById(Guid id)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace DotNet_Practice.Controllers.DepartController
 
         // DELETE DEPARTMENT
         [HttpDelete("DeleteDepartment/{id}")]
-        public async Task<IActionResult> DeleteDepartment(int id)
+        public async Task<IActionResult> DeleteDepartment(Guid id)
         {
             try
             {

@@ -13,9 +13,9 @@ namespace DotNet_Practice.Validators
             }
 
             var context = (SchoolContext)validationContext.GetService(typeof(SchoolContext));
-            var departmentId = (int)value;
+            var departmentId = (Guid)value;
 
-            if (!context.Department.Any(d => d.DepartmentId == departmentId))
+            if (!context.Department.Any(d => d.Id == departmentId))
             {
                 return new ValidationResult($"Department ID {departmentId} does not exist.");
             }

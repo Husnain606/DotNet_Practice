@@ -4,7 +4,7 @@ namespace DotNet_Practice.DTOs.NewFolder
     public class CreateStudentDTO
     {
         [Key]
-        public int StudentID { get; set; }
+        public Guid Id { get; set; }
 
         public string StudentFirstName { get; set; } = string.Empty;
 
@@ -27,7 +27,7 @@ namespace DotNet_Practice.DTOs.NewFolder
         public DateTime EnrollmentDate { get; set; } = DateTime.Now;
 
         // Foreign key for Department
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
     }
 }

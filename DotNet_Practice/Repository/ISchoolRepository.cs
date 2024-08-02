@@ -1,4 +1,5 @@
 ﻿using DotNet_Practice.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Repository
 {
@@ -6,8 +7,10 @@ namespace DotNet_Practice.Repository
     {
         Task<ResponseModel> CreateAsync(T CreateModel);
         Task<List<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int ID);
+        Task<T> GetByIdAsync(Guid ID);
         Task<ResponseModel> UpdateAsync(T UpdateModel);    
-        Task<ResponseModel> DeleteAsync(int ID);
+        Task<ResponseModel> DeleteAsync(Guid ID);
+        DbSet<T> Table { get; }
+        IQueryable<T> TableNoTracking { get; }
     }
 }

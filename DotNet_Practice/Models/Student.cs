@@ -5,7 +5,7 @@ namespace DotNet_Practice.Models
     public class Student
     {
         [Key]
-        public int StudentID { get; set; }
+        public Guid Id { get; set; }
 
         public string StudentFirstName { get; set; } = string.Empty;
 
@@ -28,7 +28,10 @@ namespace DotNet_Practice.Models
         public DateTime EnrollmentDate { get; set; } = DateTime.Now;
 
         // Foreign key for Department
-        public int DepartmentId { get; set; }
-       
+        public Guid DepartmentId { get; set; }
+
+        public virtual Department Department { get; set; } = null!;
+
+
 }
 }

@@ -7,7 +7,7 @@ namespace DotNet_Practice.Validators
     {
         public DepartmentValidator()
         {
-            RuleFor(s => s.DepartmentId)
+            RuleFor(s => s.Id)
                  .NotEmpty().WithMessage("Department ID is required");
             RuleFor(s => s.DepartmentName)
                 .NotEmpty().MaximumLength(50)

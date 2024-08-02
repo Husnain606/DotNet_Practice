@@ -11,14 +11,7 @@ namespace DotNet_Practice.Repository
         }
         public DbSet<Department> Department { get; set; }
         public DbSet<Student> Student { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Department>()
-                .HasMany(e => e.Student)
-                .WithOne()
-                .HasForeignKey("DepartmentId")
-                .IsRequired();
-        }
+  
 
 
     }

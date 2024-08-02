@@ -5,6 +5,8 @@ using AutoMapper;
 using DotNet_Practice.Controllers.StdController;
 using DotNet_Practice.DTOs.ResponseDTO;
 using DotNet_Practice.DTOs.NewFolder;
+using Microsoft.EntityFrameworkCore;
+
 
 
 namespace DotNet_Practice.Services
@@ -15,6 +17,7 @@ namespace DotNet_Practice.Services
         private readonly ISchoolRepository<Student> _studentService;
         private readonly IMapper _mapper;
         private readonly ILogger<StudentController> _logger;
+    
 
 
         public StudentService(ISchoolRepository<Student> service, IMapper mapper, ILogger<StudentController> logger)
@@ -22,6 +25,7 @@ namespace DotNet_Practice.Services
             _studentService = service;
             _mapper = mapper;
             _logger = logger;
+           
         }
 
         // CREATE STUDENT
@@ -62,7 +66,7 @@ namespace DotNet_Practice.Services
         }
 
         // GET STUDENT DETAILS BY STUDENT ID
-        public async Task<StudentDTO> GetStudentDetailsByIdAsync(int StudentID)
+        public async Task<StudentDTO> GetStudentDetailsByIdAsync(Guid StudentID)
         {
             Student std;
             try
@@ -89,12 +93,12 @@ namespace DotNet_Practice.Services
             ResponseModel model = new ResponseModel();
             try
             {
-                var student = await _studentService.GetByIdAsync(StudentModel.StudentID);
+                var student = await _studentService.GetByIdAsync(StudentModel.Id);
                 if (student == null)
                 {
                     model.IsSuccess = false;
-                    model.Messsage = "Student Not Found with ID = {0}!!" + StudentModel.StudentID;
-                    _logger.LogInformation("Student Not Found with ID = {0}!!", StudentModel.StudentID);
+                    model.Messsage = "Student Not Found with ID = {0}!!" + StudentModel.Id;
+                    _logger.LogInformation("Student Not Found with ID = {0}!!", StudentModel.Id);
                     return model;
                 }
                 var std_upd = _mapper.Map<Student>(StudentModel);
@@ -109,7 +113,7 @@ namespace DotNet_Practice.Services
         }
 
         // DELETE STUDENT
-        public async Task<ResponseModel> DeleteStudentAsync(int StudentID)
+        public async Task<ResponseModel> DeleteStudentAsync(Guid StudentID)
         {
             ResponseModel model = new ResponseModel();
             try
@@ -124,6 +128,25 @@ namespace DotNet_Practice.Services
             return model;
         }
 
+        public async Task<List<StudentDTO>> GetStudentDetailsByAgeG13Async(int age)
+        {
+            try
+            {
+                var std =await _studentService.Table.Where(s => s.Age == age).ToListAsync();
+               // var stdd = std.Where(std => std == age);
+                if (std == null) return null;
+                
+                var stdDTO = _mapper.Map<List<StudentDTO>>(std);
+
+                return stdDTO;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        
     }
 
 }

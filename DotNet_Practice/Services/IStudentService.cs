@@ -7,9 +7,10 @@ namespace DotNet_Practice.Services
     public interface IStudentService
     {
         Task<List<StudentDTO>> GetStudentListAsync();
-        Task<StudentDTO> GetStudentDetailsByIdAsync(int StudentID);
+        Task<StudentDTO> GetStudentDetailsByIdAsync(Guid StudentID);
         Task<ResponseModel> UpdateStudentAsync(CreateStudentDTO StudentModel);
         Task<ResponseModel> CreateStudentAsync(CreateStudentDTO StudentModel);
-        Task<ResponseModel> DeleteStudentAsync(int StudentID);
+        Task<ResponseModel> DeleteStudentAsync(Guid StudentID);
+        Task<List<StudentDTO>> GetStudentDetailsByAgeG13Async(int age);
     }
 }

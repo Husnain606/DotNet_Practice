@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+  using Microsoft.EntityFrameworkCore;
 using DotNet_Practice.Services;
 using DotNet_Practice.Configuration;
 using Serilog;
@@ -19,7 +19,7 @@ internal class Program
         builder.Services.AddSerilog();
 
 
-        // Add services to the container.
+        // Add services to the container.  
 
         builder.Services.AddControllers().AddFluentValidation(
             v=> v.RegisterValidatorsFromAssemblyContaining<Student>())  ;

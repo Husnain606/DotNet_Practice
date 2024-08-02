@@ -3,28 +3,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Repository
 {
-
-    public class SchoolRepository<T> : ISchoolRepository<T> where T:class
+    public class SchoolRepository<T> : ISchoolRepository<T> where T : class
     {
         private readonly SchoolContext _dbContext;
-       // public IQueryable<T> TableNoTracking => Entities.AsNoTracking();
-        public SchoolRepository(SchoolContext dbContext) 
+        private DbSet<T> _entities;
+        public SchoolRepository(SchoolContext dbContext)
         {
             _dbContext = dbContext;
-        
         }
+
+        // IQueryable<T> implementation
+        protected virtual DbSet<T> Entities => _entities ??= _dbContext.Set<T>();
+
+        public DbSet<T> Table => Entities;
+
+        // IQueryable<T> with AsNoTracking
+        public IQueryable<T> TableNoTracking => _dbContext.Set<T>().AsNoTracking();
 
 
         // CREATE 
-        public async Task<ResponseModel> CreateAsync(T CreateModel)
+        public async Task<ResponseModel> CreateAsync(T createModel)
         {
             ResponseModel model = new ResponseModel();
             try
             {
-                await _dbContext.AddAsync<T>(CreateModel);
+                await _dbContext.AddAsync<T>(createModel);
                 await _dbContext.SaveChangesAsync();
                 model.IsSuccess = true;
-                model.Messsage = "Student Created Successfully";
+                model.Messsage = "Entity Created Successfully";
             }
             catch (Exception ex)
             {
@@ -37,44 +43,52 @@ namespace DotNet_Practice.Repository
         // GET THE LIST OF ALL 
         public async Task<List<T>> GetAllAsync()
         {
-            List<T> GETList;
             try
             {
-                GETList = await _dbContext.Set<T>().ToListAsync();
+                return await _dbContext.Set<T>().ToListAsync();
             }
             catch (Exception)
             {
                 throw;
             }
-            return GETList;
+        }
+
+        // GET THE LIST OF ALL with AsNoTracking
+        public async Task<List<T>> GetAllNoTrackingAsync()
+        {
+            try
+            {
+                return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // GET  DETAILS BY  ID
-        public async Task<T> GetByIdAsync(int ID)
+        public async Task<T> GetByIdAsync(Guid id)
         {
-            T GetById;
             try
             {
-                GetById = await _dbContext.FindAsync<T>(ID);
+                return await _dbContext.FindAsync<T>(id);
             }
             catch (Exception)
             {
                 throw;
             }
-            return GetById;
         }
 
         // UPDATE 
-        public async Task<ResponseModel> UpdateAsync(T UpdateModel)
+        public async Task<ResponseModel> UpdateAsync(T updateModel)
         {
             ResponseModel model = new ResponseModel();
             try
             {
-                _dbContext.Update<T>(UpdateModel);
-                model.Messsage = "Student Updated Successfully";
-               
+                _dbContext.Update<T>(updateModel);
                 await _dbContext.SaveChangesAsync();
                 model.IsSuccess = true;
+                model.Messsage = "Entity Updated Successfully";
             }
             catch (Exception ex)
             {
@@ -84,25 +98,24 @@ namespace DotNet_Practice.Repository
             return model;
         }
 
-
         // DELETE 
-        public async Task<ResponseModel> DeleteAsync(int ID)
+        public async Task<ResponseModel> DeleteAsync(Guid id)
         {
             ResponseModel model = new ResponseModel();
             try
             {
-                T _temp = await GetByIdAsync(ID);
-                if (_temp != null)
+                T entity = await GetByIdAsync(id);
+                if (entity != null)
                 {
-                    _dbContext.Remove<T>(_temp);
+                    _dbContext.Remove<T>(entity);
                     await _dbContext.SaveChangesAsync();
                     model.IsSuccess = true;
-                    model.Messsage = "Student Deleted Successfully";
+                    model.Messsage = "Entity Deleted Successfully";
                 }
                 else
                 {
                     model.IsSuccess = false;
-                    model.Messsage = "Student Not Found";
+                    model.Messsage = "Entity Not Found";
                 }
             }
             catch (Exception ex)
@@ -112,10 +125,5 @@ namespace DotNet_Practice.Repository
             }
             return model;
         }
-
     }
 }
-
-        
-    
-

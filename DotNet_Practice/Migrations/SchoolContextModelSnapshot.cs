@@ -24,11 +24,9 @@ namespace DotNet_Practice.Migrations
 
             modelBuilder.Entity("DotNet_Practice.Models.Department", b =>
                 {
-                    b.Property<int>("DepartmentId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DepartmenrDescription")
                         .IsRequired()
@@ -38,18 +36,16 @@ namespace DotNet_Practice.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DepartmentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Department");
                 });
 
             modelBuilder.Entity("DotNet_Practice.Models.Student", b =>
                 {
-                    b.Property<int>("StudentID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentID"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -66,8 +62,8 @@ namespace DotNet_Practice.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
@@ -82,20 +78,17 @@ namespace DotNet_Practice.Migrations
 
                     b.Property<string>("StudentFatherName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentFirstName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentLastName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("StudentID");
+                    b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
@@ -104,11 +97,13 @@ namespace DotNet_Practice.Migrations
 
             modelBuilder.Entity("DotNet_Practice.Models.Student", b =>
                 {
-                    b.HasOne("DotNet_Practice.Models.Department", null)
+                    b.HasOne("DotNet_Practice.Models.Department", "Department")
                         .WithMany("Student")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("DotNet_Practice.Models.Department", b =>

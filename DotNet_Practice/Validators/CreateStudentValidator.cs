@@ -44,7 +44,7 @@ namespace DotNet_Practice.Validators
 
             RuleFor(s => s.DepartmentId)
                 .NotEmpty()
-                .Must(departmentId => context.Department.Any(d => d.DepartmentId == departmentId))
+                .Must(departmentId => context.Department.Any(d => d.Id == departmentId))
                 .WithMessage(departmentId => $"Department ID {departmentId} does not exist.");
         }
     }

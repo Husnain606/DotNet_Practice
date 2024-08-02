@@ -39,7 +39,7 @@ namespace DotNet_Practice.Controllers.StdController
 
         // GET STUDENT DETAILS BY ID
         [HttpGet("GetStudentById/{id}")]
-        public async Task<IActionResult> GetStudentById(int id)
+        public async Task<IActionResult> GetStudentById(Guid id)
         {
             try
             {
@@ -50,6 +50,27 @@ namespace DotNet_Practice.Controllers.StdController
                     return NotFound();
                 }
              
+                return Ok(student);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        // GET STUDENT DETAILS BY ID
+        [HttpGet("GetStudentByAge/{age}\"")]
+        public async Task<IActionResult> GetStudentByAge(int age)
+        {
+            try
+            {
+                var student = await studentServices.GetStudentDetailsByAgeG13Async(age);
+                if (student == null)
+                {
+                    _logger.LogInformation("Student Not Found with Age = {0}!!");
+                    return NotFound();
+                }
+
                 return Ok(student);
             }
             catch (Exception)
@@ -91,7 +112,7 @@ namespace DotNet_Practice.Controllers.StdController
 
         // DELETE STUDENT
         [HttpDelete("DeleteStudent/{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        public async Task<IActionResult> DeleteStudent(Guid id)
         {
             try
             {
