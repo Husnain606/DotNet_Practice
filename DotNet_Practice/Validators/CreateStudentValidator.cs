@@ -1,12 +1,11 @@
 ﻿using DotNet_Practice.DTOs.NewFolder;
-using DotNet_Practice.Repository;
 using FluentValidation;
 
 namespace DotNet_Practice.Validators
 {
     public class CreateStudentValidator : AbstractValidator<CreateStudentDTO>
     {
-        public CreateStudentValidator(SchoolContext context)
+        public CreateStudentValidator()
         {
             RuleFor(s => s.StudentFirstName)
                 .NotEmpty().WithMessage("First Name is required")
@@ -43,9 +42,7 @@ namespace DotNet_Practice.Validators
                 .Equal(s => s.Pasword).WithMessage("Passwords do not match");
 
             RuleFor(s => s.DepartmentId)
-                .NotEmpty()
-                .Must(departmentId => context.Department.Any(d => d.Id == departmentId))
-                .WithMessage(departmentId => $"Department ID {departmentId} does not exist.");
+                .NotEmpty();
         }
     }
 }

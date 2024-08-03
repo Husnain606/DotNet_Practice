@@ -6,8 +6,6 @@ namespace DotNet_Practice.Models
     {
         [Key]
         public Guid Id { get; set; }
-
-        
         public string DepartmentName { get; set; }
         public string DepartmenrDescription { get; set; }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Repository
 {
-    public interface ISchoolRepository<T> where T : class 
+    public interface IRepository<T> where T : class 
     {
         Task<ResponseModel> CreateAsync(T CreateModel);
         Task<List<T>> GetAllAsync();

@@ -1,31 +1,28 @@
 ﻿using DotNet_Practice.ViewModels;
-using DotNet_Practice.Repository;
-using DotNet_Practice.Models;
 using AutoMapper;
-using DotNet_Practice.Controllers.StdController;
 using DotNet_Practice.DTOs.ResponseDTO;
 using DotNet_Practice.DTOs.NewFolder;
 using Microsoft.EntityFrameworkCore;
+using DotNet_Practice.Models;
+using DotNet_Practice.Repository;
 
-
-
-namespace DotNet_Practice.Services
+namespace DotNet_Practice.Services.Students
 {
     public class StudentService : IStudentService
     {
 
-        private readonly ISchoolRepository<Student> _studentService;
+        private readonly IRepository<Student> _studentService;
         private readonly IMapper _mapper;
-        private readonly ILogger<StudentController> _logger;
-    
+        private readonly ILogger<StudentService> _logger;
 
 
-        public StudentService(ISchoolRepository<Student> service, IMapper mapper, ILogger<StudentController> logger)
+
+        public StudentService(IRepository<Student> service, IMapper mapper, ILogger<StudentService> logger)
         {
             _studentService = service;
             _mapper = mapper;
             _logger = logger;
-           
+
         }
 
         // CREATE STUDENT
@@ -35,15 +32,14 @@ namespace DotNet_Practice.Services
             try
             {
                 var student = _mapper.Map<Student>(StudentModel);
-
+                student.Id = Guid.NewGuid();
                 model = await _studentService.CreateAsync(student);
                 model.IsSuccess = true;
                 model.Messsage = "Student Created Successfully";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                model.IsSuccess = false;
-                model.Messsage = "Error: " + ex.Message;
+                throw;
             }
             return model;
         }
@@ -104,10 +100,9 @@ namespace DotNet_Practice.Services
                 var std_upd = _mapper.Map<Student>(StudentModel);
                 model = await _studentService.UpdateAsync(std_upd);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                model.IsSuccess = false;
-                model.Messsage = "Error: " + ex.Message;
+                throw;
             }
             return model;
         }
@@ -120,10 +115,9 @@ namespace DotNet_Practice.Services
             {
                 model = await _studentService.DeleteAsync(StudentID);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                model.IsSuccess = false;
-                model.Messsage = "Error: " + ex.Message;
+                throw;
             }
             return model;
         }
@@ -132,10 +126,10 @@ namespace DotNet_Practice.Services
         {
             try
             {
-                var std =await _studentService.Table.Where(s => s.Age == age).ToListAsync();
-               // var stdd = std.Where(std => std == age);
+                var std = await _studentService.Table.Where(s => s.Age == age).ToListAsync();
+                // var stdd = std.Where(std => std == age);
                 if (std == null) return null;
-                
+
                 var stdDTO = _mapper.Map<List<StudentDTO>>(std);
 
                 return stdDTO;
@@ -146,7 +140,7 @@ namespace DotNet_Practice.Services
             }
         }
 
-        
+
     }
 
 }

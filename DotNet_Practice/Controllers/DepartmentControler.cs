@@ -1,107 +1,106 @@
 ﻿using AutoMapper;
-using DotNet_Practice.Models;
-using DotNet_Practice.Repository;
 using Microsoft.AspNetCore.Mvc;
-using DotNet_Practice.DTOs.ResponseDTO;
+using DotNet_Practice.DTOs.RequestDTO;
+using DotNet_Practice.Services.Departments;
 
-namespace DotNet_Practice.Controllers.DepartController
+namespace DotNet_Practice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly ISchoolRepository<Department> _departmentService;
+
+        private readonly IDepartmentService departmentServices;
         private readonly IMapper _mapper;
         private readonly ILogger<DepartmentController> _logger;
 
-        public DepartmentController(ISchoolRepository<Department> service, IMapper mapper, ILogger<DepartmentController> logger)
+        public DepartmentController(IMapper mapper, ILogger<DepartmentController> logger, IDepartmentService _departmentServices)
         {
-            _departmentService = service;
             _mapper = mapper;
             _logger = logger;
+            departmentServices = _departmentServices;
         }
 
-        // GET ALL DEPARTMENTS
+        // GET ALL Department
         [HttpGet("GetAllDepartments")]
         public async Task<IActionResult> GetAllDepartments()
         {
             try
             {
-                _logger.LogInformation("Getting all the departments executed !!");
-                var departments = await _departmentService.GetAllAsync();
+                var departments = await departmentServices.GetDepartmentListAsync();
                 if (departments == null) return NotFound();
-                var departmentDTOs = _mapper.Map<List<DepartmentDTO>>(departments);
-                return Ok(departmentDTOs);
+                return Ok(departments);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
-        // GET DEPARTMENT DETAILS BY ID
+        // GET Department DETAILS BY ID
         [HttpGet("GetDepartmentById/{id}")]
         public async Task<IActionResult> GetDepartmentById(Guid id)
         {
             try
             {
-                var department = await _departmentService.GetByIdAsync(id);
+                var department = await departmentServices.GetDepartmentDetailsByIdAsync(id);
                 if (department == null)
                 {
                     _logger.LogInformation("Department Not Found with ID = {0}!!", id);
                     return NotFound();
                 }
-                var departmentDTO = _mapper.Map<DepartmentDTO>(department);
-                return Ok(departmentDTO);
+                return Ok(department);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
-        // CREATE DEPARTMENT
+
+
+        // CREATE Department
         [HttpPost("CreateDepartment")]
-        public async Task<IActionResult> CreateDepartment(Department departmentModel)
+        public async Task<IActionResult> CreateDepartment(CreateDepartmentDTO departmentModel)
         {
             try
             {
-                var model = await _departmentService.CreateAsync(departmentModel);
+                var model = await departmentServices.CreateDepartmentAsync(departmentModel);
                 return Ok(model);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
-        // UPDATE DEPARTMENT
+        // UPDATE Department
         [HttpPut("UpdateDepartment")]
-        public async Task<IActionResult> UpdateDepartment(Department departmentModel)
+        public async Task<IActionResult> UpdateDepartment(CreateDepartmentDTO departmentModel)
         {
             try
             {
-                var model = await _departmentService.UpdateAsync(departmentModel);
+                var model = await departmentServices.UpdateDepartmentAsync(departmentModel);
                 return Ok(model);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
-        // DELETE DEPARTMENT
+        // DELETE Department
         [HttpDelete("DeleteDepartment/{id}")]
         public async Task<IActionResult> DeleteDepartment(Guid id)
         {
             try
             {
-                var model = await _departmentService.DeleteAsync(id);
+                var model = await departmentServices.DeleteDepartmentAsync(id);
                 return Ok(model);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
     }

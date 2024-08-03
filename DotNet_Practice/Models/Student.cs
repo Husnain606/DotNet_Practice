@@ -6,7 +6,6 @@ namespace DotNet_Practice.Models
     {
         [Key]
         public Guid Id { get; set; }
-
         public string StudentFirstName { get; set; } = string.Empty;
 
         public string StudentLastName { get; set; } = string.Empty;

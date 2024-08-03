@@ -3,9 +3,7 @@ namespace DotNet_Practice.DTOs.NewFolder
 {
     public class CreateStudentDTO
     {
-        [Key]
         public Guid Id { get; set; }
-
         public string StudentFirstName { get; set; } = string.Empty;
 
         public string StudentLastName { get; set; } = string.Empty;

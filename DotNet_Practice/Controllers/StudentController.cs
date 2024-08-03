@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DotNet_Practice.Services;
 using AutoMapper;
 using DotNet_Practice.DTOs.NewFolder;
+using DotNet_Practice.Services.Students;
 
-namespace DotNet_Practice.Controllers.StdController
+namespace DotNet_Practice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
     {
-    
+
         private readonly IStudentService studentServices;
         private readonly IMapper _mapper;
         private readonly ILogger<StudentController> _logger;
 
-        public StudentController( IMapper mapper, ILogger<StudentController> logger, IStudentService _studentServices)
+        public StudentController(IMapper mapper, ILogger<StudentController> logger, IStudentService _studentServices)
         {
             _mapper = mapper;
             _logger = logger;
@@ -31,9 +31,9 @@ namespace DotNet_Practice.Controllers.StdController
                 if (students == null) return NotFound();
                 return Ok(students);
             }
-             catch (Exception)
+            catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
@@ -49,16 +49,16 @@ namespace DotNet_Practice.Controllers.StdController
                     _logger.LogInformation("Student Not Found with ID = {0}!!", id);
                     return NotFound();
                 }
-             
+
                 return Ok(student);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
-        // GET STUDENT DETAILS BY ID
+        // GET STUDENT DETAILS BY Age
         [HttpGet("GetStudentByAge/{age}\"")]
         public async Task<IActionResult> GetStudentByAge(int age)
         {
@@ -70,12 +70,11 @@ namespace DotNet_Practice.Controllers.StdController
                     _logger.LogInformation("Student Not Found with Age = {0}!!");
                     return NotFound();
                 }
-
                 return Ok(student);
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
@@ -91,7 +90,7 @@ namespace DotNet_Practice.Controllers.StdController
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
@@ -106,7 +105,7 @@ namespace DotNet_Practice.Controllers.StdController
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
 
@@ -121,7 +120,7 @@ namespace DotNet_Practice.Controllers.StdController
             }
             catch (Exception)
             {
-                return BadRequest();
+                throw;
             }
         }
     }

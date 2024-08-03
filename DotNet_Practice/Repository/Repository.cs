@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Repository
 {
-    public class SchoolRepository<T> : ISchoolRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly SchoolContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         private DbSet<T> _entities;
-        public SchoolRepository(SchoolContext dbContext)
+        public Repository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -32,10 +32,9 @@ namespace DotNet_Practice.Repository
                 model.IsSuccess = true;
                 model.Messsage = "Entity Created Successfully";
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                model.IsSuccess = false;
-                model.Messsage = "Error: " + ex.Message;
+                throw;
             }
             return model;
         }
@@ -90,10 +89,9 @@ namespace DotNet_Practice.Repository
                 model.IsSuccess = true;
                 model.Messsage = "Entity Updated Successfully";
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                model.IsSuccess = false;
-                model.Messsage = "Error: " + ex.Message;
+                throw;
             }
             return model;
         }
@@ -118,10 +116,9 @@ namespace DotNet_Practice.Repository
                     model.Messsage = "Entity Not Found";
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                model.IsSuccess = false;
-                model.Messsage = "Error: " + ex.Message;
+                throw;
             }
             return model;
         }

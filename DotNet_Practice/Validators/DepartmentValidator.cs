@@ -1,9 +1,9 @@
-﻿using DotNet_Practice.Models;
+﻿using DotNet_Practice.DTOs.RequestDTO;
 using FluentValidation;
 
 namespace DotNet_Practice.Validators
 {
-    public class DepartmentValidator : AbstractValidator<Department>
+    public class DepartmentValidator : AbstractValidator<CreateDepartmentDTO>
     {
         public DepartmentValidator()
         {

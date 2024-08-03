@@ -2,7 +2,7 @@
 using DotNet_Practice.DTOs.ResponseDTO;
 using DotNet_Practice.ViewModels;
 
-namespace DotNet_Practice.Services
+namespace DotNet_Practice.Services.Students
 {
     public interface IStudentService
     {

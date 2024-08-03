@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Repository
 {
-    public class SchoolContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public SchoolContext(DbContextOptions options)
+        public ApplicationDbContext(DbContextOptions options)
         : base(options)
         {
         }
