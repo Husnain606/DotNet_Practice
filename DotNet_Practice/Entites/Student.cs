@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DotNet_Practice.Models
+﻿namespace DotNet_Practice.Models
 {
     public class Student
     {
-        [Key]
         public Guid Id { get; set; }
         public string StudentFirstName { get; set; } = string.Empty;
 

@@ -1,4 +1,6 @@
-﻿namespace DotNet_Practice.DTOs.ResponseDTO
+﻿using DotNet_Practice.Models;
+
+namespace DotNet_Practice.DTOs.ResponseDTO
 {
     public class StudentDTO
     {
@@ -8,6 +10,6 @@
         public int Age { get; set; }
         public string Mail { get; set; } = string.Empty;
         public string Contact { get; set; } = string.Empty;
-
+        public string Department { get; set; } = string.Empty;
     }
 }

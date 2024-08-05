@@ -59,12 +59,12 @@ namespace DotNet_Practice.Controllers
         }
 
         // GET STUDENT DETAILS BY Age
-        [HttpGet("GetStudentByAge/{age}\"")]
-        public async Task<IActionResult> GetStudentByAge(int age)
+        [HttpGet("GetStudentByAge\"")]
+        public async Task<IActionResult> GetStudentByAge()
         {
             try
             {
-                var student = await studentServices.GetStudentDetailsByAgeG13Async(age);
+                var student = await studentServices.GetSpecificFields();
                 if (student == null)
                 {
                     _logger.LogInformation("Student Not Found with Age = {0}!!");

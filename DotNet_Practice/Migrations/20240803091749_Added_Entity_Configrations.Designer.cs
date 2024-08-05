@@ -4,6 +4,7 @@ using DotNet_Practice.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNet_Practice.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class SchoolContextModelSnapshot : ModelSnapshot
+    [Migration("20240803091749_Added_Entity_Configrations")]
+    partial class Added_Entity_Configrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,6 @@ namespace DotNet_Practice.Migrations
             modelBuilder.Entity("DotNet_Practice.Models.Student", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Age")
@@ -57,8 +59,7 @@ namespace DotNet_Practice.Migrations
 
                     b.Property<string>("ConfirmPasword")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Contact")
                         .IsRequired()
@@ -73,13 +74,11 @@ namespace DotNet_Practice.Migrations
 
                     b.Property<string>("Mail")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pasword")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StudentFatherName")
                         .IsRequired()
@@ -99,12 +98,6 @@ namespace DotNet_Practice.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("Mail")
-                        .IsUnique();
-
-                    b.HasIndex("Pasword")
-                        .IsUnique();
 
                     b.ToTable("Student");
                 });

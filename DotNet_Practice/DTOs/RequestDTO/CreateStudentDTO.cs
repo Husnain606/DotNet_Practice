@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace DotNet_Practice.DTOs.NewFolder
+﻿namespace DotNet_Practice.DTOs.NewFolder
 {
     public class CreateStudentDTO
     {

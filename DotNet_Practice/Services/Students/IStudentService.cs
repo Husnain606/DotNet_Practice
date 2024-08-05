@@ -12,5 +12,6 @@ namespace DotNet_Practice.Services.Students
         Task<ResponseModel> CreateStudentAsync(CreateStudentDTO StudentModel);
         Task<ResponseModel> DeleteStudentAsync(Guid StudentID);
         Task<List<StudentDTO>> GetStudentDetailsByAgeG13Async(int age);
+         Task<List<StudentDTO>> GetSpecificFields();
     }
 }
