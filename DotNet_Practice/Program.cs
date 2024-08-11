@@ -36,8 +36,6 @@ internal class Program
 
         //Registering MyService with its interface IMyService
         builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-
         builder.Services.AddScoped(typeof(IStudentService), typeof(StudentService));
         builder.Services.AddScoped(typeof(IDepartmentService), typeof(DepartmentService));
 

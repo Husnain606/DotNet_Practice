@@ -11,5 +11,6 @@ namespace DotNet_Practice.DTOs.ResponseDTO
         public string Mail { get; set; } = string.Empty;
         public string Contact { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
+         public string timespann {  get; set; }
     }
 }
