@@ -4,7 +4,6 @@ using DotNet_Practice.DTOs.ResponseDTO;
 using DotNet_Practice.Models;
 using DotNet_Practice.Repository;
 using DotNet_Practice.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace DotNet_Practice.Services.Departments
 {

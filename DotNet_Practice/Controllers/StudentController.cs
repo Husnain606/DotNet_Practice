@@ -64,7 +64,7 @@ namespace DotNet_Practice.Controllers
         {
             try
             {
-                var student = await studentServices.GroupByDepartment();
+                var student = await studentServices.GetStudentDetailsByAgeG13Async(13);
                 if (student == null)
                 {
                     _logger.LogInformation("Student Not Found with Age = {0}!!");
