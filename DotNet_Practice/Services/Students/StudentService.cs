@@ -13,19 +13,16 @@ namespace DotNet_Practice.Services.Students
     public class StudentService : IStudentService
     {
         private readonly IRepository<Student> _studentRepository;
-        private readonly IRepository<Department> _departmentServices;
         private readonly IMapper _mapper;
         private readonly ILogger<StudentService> _logger;
         private readonly ApplicationDbContext _dbContext;
 
-        public StudentService(IRepository<Student> studentRepository, IMapper mapper, ILogger<StudentService> logger, ApplicationDbContext dbContext, IRepository<Department> departmentServices)
+        public StudentService(IRepository<Student> studentRepository, IMapper mapper, ILogger<StudentService> logger, ApplicationDbContext dbContext)
         {
             _studentRepository = studentRepository;
             _mapper = mapper;
             _logger = logger;
             _dbContext = dbContext;
-            _departmentServices = departmentServices;
-
         }
 
         // CREATE STUDENT
@@ -61,12 +58,12 @@ namespace DotNet_Practice.Services.Students
                 var students = await _studentRepository.GetAllAsync();
                 if (students == null) return null;
                 var studentDTOs = _mapper.Map<List<StudentDTO>>(students);
-                int i = 0;
-                foreach (var studentDTO in studentDTOs)  
-                {
-                    studentDTO.timespann = CheckTime.GetTimeDifference(students[i].EnrollmentDate);
-                    i++;
-                }
+                //int i = 0;
+                //foreach (var studentDTO in studentDTOs)
+                //{
+                //    studentDTO.timespann = CheckTime.GetTimeDifference(students[i].EnrollmentDate);
+                //    i++;
+                //}
                 return studentDTOs;
             }
             catch (Exception ex)
@@ -88,7 +85,7 @@ namespace DotNet_Practice.Services.Students
                     return null;
                 }
                 var studentDTO = _mapper.Map<StudentDTO>(student);
-                studentDTO.timespann= CheckTime.GetTimeDifference(student.EnrollmentDate);
+                studentDTO.timespann = CheckTime.GetTimeDifference(student.EnrollmentDate);
                 return studentDTO;
             }
             catch (Exception ex)
@@ -163,7 +160,7 @@ namespace DotNet_Practice.Services.Students
         }
 
 
-     
+
     }
 }
 

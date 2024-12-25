@@ -12,7 +12,9 @@ namespace DotNet_Practice.Controllers
 
         private readonly IStudentService studentServices;
         private readonly IMapper _mapper;
-        private readonly ILogger<StudentController> _logger;
+        private readonly ILogger<StudentController> _logger;   // 	D – Dependency Inversion Principle (DIP):
+                                                               // 	Injecting Logger rather then inheriting through inheritince
+                                                               // 	a high level module or main module is restricted to implement an low level module 
 
         public StudentController(IMapper mapper, ILogger<StudentController> logger, IStudentService _studentServices)
         {

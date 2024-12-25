@@ -4,6 +4,10 @@ namespace DotNet_Practice.Services.Students
 {
     public interface IStudentGetMethods
     {
+        /* 	I  - Interface Segregation Principle (ISP):
+         * Create IStudentGetMethods interface rather then
+         * put all the joins and groups method declaration
+         * in single interface IStudentServices*/
         Task<List<StudentDTO>> InnerJoin();
         Task<List<StudentDTO>> GetLeftOuterJoinFields();
         Task<List<StudentDTO>> GetRightOuterJoinFields();

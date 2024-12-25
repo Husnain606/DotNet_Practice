@@ -5,6 +5,7 @@ using DotNet_Practice.Models;
 using DotNet_Practice.Repository;
 namespace DotNet_Practice.Services.Students
 {
+    /* A Class has only one responsibilities so that Joins and Groups methods are seprated from      */
     public class StudentGetMethods : IStudentGetMethods
     {
 
@@ -28,67 +29,44 @@ namespace DotNet_Practice.Services.Students
         {
             try
             {
-                var departments = await _departmentServices.GetAllAsync();
-                // Fetch the list of students from the database
-                var students = await _studentRepository.Table.AsNoTracking().ToListAsync();
+                var studentsWithDepartments = await _studentRepository.Table
+                    .Include(s => s.Department)
+                    .AsNoTracking()
+                    .ToListAsync();
 
-                // Perform the join in-memory
-                var innerJoin = from student in students
-                                join department in departments
-                                on student.DepartmentId equals department.Id
-                                select new
-                                {
-                                    student.StudentFirstName,
-                                    student.Age,
-                                    department.DepartmenrDescription
-                                };
-
-                // Map the results to StudentDTO
-                var result = innerJoin.Select(x => new StudentDTO
+                var result = studentsWithDepartments.Select(student => new StudentDTO
                 {
-                    Name = x.StudentFirstName,
-                    Age = x.Age,
-                    Department = x.DepartmenrDescription
+                    Name = student.StudentFirstName,
+                    Age = student.Age,
+                    Department = student.Department.DepartmenrDescription
                 }).ToList();
 
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while getting students by age.");
+                _logger.LogError(ex, "Error occurred while getting students with departments.");
                 throw;
             }
         }
+
         //Get Left Outer Join Fields
         public async Task<List<StudentDTO>> GetLeftOuterJoinFields()
         {
             try
             {
-                // Fetch the list of departments from the database
-                var departmentDTO = await _departmentServices.GetAllAsync();
-                var departments = _mapper.Map<List<Department>>(departmentDTO);
+                var studentsWithDepartments = await _studentRepository.Table
+                    .Include(s => s.Department)
+                    .AsNoTracking()
+                    .ToListAsync();
 
-                // Fetch the list of students from the database
-                var students = await _studentRepository.Table.AsNoTracking().ToListAsync();
-
-                // Perform the left outer join in-memory
-                var leftOuterJoin = from student in students
-                                    join department in departments
-                                    on student.DepartmentId equals department.Id into deptGroup
-                                    from dept in deptGroup.DefaultIfEmpty() // This ensures that all students are included
-                                    select new
-                                    {
-                                        student.StudentFirstName,
-                                        student.Age,
-                                        DepartmentDescription = dept?.DepartmenrDescription
-                                    };
-                // Map the results to StudentDTO
-                var result = leftOuterJoin.Select(x => new StudentDTO
+                var result = studentsWithDepartments.Select(student => new StudentDTO
                 {
-                    Name = x.StudentFirstName,
-                    Age = x.Age,
-                    Department = x.DepartmentDescription ?? "No Department"
+                    Name = student.StudentFirstName,
+                    Age = student.Age,
+                    Department = student.Department?.DepartmenrDescription ?? "No Department"
                 }).ToList();
+
                 return result;
             }
             catch (Exception ex)
@@ -97,6 +75,7 @@ namespace DotNet_Practice.Services.Students
                 throw;
             }
         }
+
         // Get Right Outer Join Fields
         public async Task<List<StudentDTO>> GetRightOuterJoinFields()
         {
@@ -141,29 +120,19 @@ namespace DotNet_Practice.Services.Students
         {
             try
             {
-                var departmentDTO = await _departmentServices.GetAllAsync();
-                var departments = _mapper.Map<List<Department>>(departmentDTO);
+                var studentsWithDepartments = await _studentRepository.Table
+                    .Include(s => s.Department)
+                    .AsNoTracking()
+                    .Where(s => s.Department != null) // Inner join condition
+                    .ToListAsync();
 
-                var students = await _studentRepository.Table.AsNoTracking().ToListAsync();
-
-                var innerJoin = students
-                    .Join(departments,
-                        student => student.DepartmentId,
-                        department => department.Id,
-                        (student, department) => new
-                        {
-                            student.StudentFirstName,
-                            student.Age,
-                            department.DepartmenrDescription
-                        })
-                    .ToList();
-
-                var result = innerJoin.Select(x => new StudentDTO
+                var result = studentsWithDepartments.Select(student => new StudentDTO
                 {
-                    Name = x.StudentFirstName,
-                    Age = x.Age,
-                    Department = x.DepartmenrDescription
+                    Name = student.StudentFirstName,
+                    Age = student.Age,
+                    Department = student.Department.DepartmenrDescription
                 }).ToList();
+
                 return result;
             }
             catch (Exception ex)
@@ -172,6 +141,7 @@ namespace DotNet_Practice.Services.Students
                 throw;
             }
         }
+
         //Get Right Inner Join Fields
         public async Task<List<StudentDTO>> GetRightInnerJoinFields()
         {
@@ -212,37 +182,17 @@ namespace DotNet_Practice.Services.Students
         {
             try
             {
-                // Retrieve all departments
-                var departmentDTO = await _departmentServices.GetAllAsync();
-                var departments = _mapper.Map<List<Department>>(departmentDTO);
+                var studentsWithDepartments = await _studentRepository.Table
+                    .Include(s => s.Department)
+                    .AsNoTracking()
+                    .ToListAsync();
 
-                // Retrieve all students
-                var students = await _studentRepository.Table.AsNoTracking().ToListAsync();
-
-                // Perform Group Join
-                var groupJoin = departments
-                    .GroupJoin(
-                        students,
-                        department => department.Id, // Key selector for departments
-                        student => student.DepartmentId, // Key selector for students
-                        (department, studentGroup) => new
-                        {
-                            DepartmentName = department.DepartmenrDescription,
-                            Students = studentGroup
-                        })
-                    .ToList();
-
-                // Flatten the results and map to StudentDTO
-                var result = groupJoin
-                    .SelectMany(
-                        dept => dept.Students.DefaultIfEmpty(), // Handle the case where there might be no students in a department
-                        (dept, student) => new StudentDTO
-                        {
-                            Name = student?.StudentFirstName ?? "No Student", // Handle null case for students
-                            Age = student?.Age ?? 0, // Handle null case for age
-                            Department = dept.DepartmentName
-                        })
-                    .ToList();
+                var result = studentsWithDepartments.Select(student => new StudentDTO
+                {
+                    Name = student.StudentFirstName,
+                    Age = student.Age,
+                    Department = student.Department?.DepartmenrDescription ?? "No Department"
+                }).ToList();
 
                 return result;
             }
@@ -252,12 +202,16 @@ namespace DotNet_Practice.Services.Students
                 throw;
             }
         }
+
         // GROUP BY DEPARTMENT
         public async Task<List<GroupedStudentsDTO>> GroupByDepartment()
         {
             try
             {
-                var students = await _studentRepository.Table.AsNoTracking().ToListAsync();
+                var students = await _studentRepository.Table
+                    .Include(s => s.Department)
+                    .AsNoTracking()
+                    .ToListAsync();
 
                 var groupedStudents = students
                     .GroupBy(student => student.DepartmentId)
@@ -266,7 +220,7 @@ namespace DotNet_Practice.Services.Students
                         DepartmentId = group.Key,
                         Students = group.Select(student => new StudentDTO
                         {
-                            Name = student.StudentFirstName + student.StudentLastName,
+                            Name = student.StudentFirstName + " " + student.StudentLastName,
                             Mail = student.Mail,
                             Class = student.Class,
                             Contact = student.Contact,
@@ -283,6 +237,7 @@ namespace DotNet_Practice.Services.Students
                 throw;
             }
         }
+
 
     }
 }
